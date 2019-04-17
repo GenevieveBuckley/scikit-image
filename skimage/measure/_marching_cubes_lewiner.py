@@ -119,8 +119,8 @@ def marching_cubes_lewiner(volume, level=None, spacing=(1., 1., 1.),
     """
 
     # Check volume and ensure its in the format that the alg needs
-    if not isinstance(volume, np.ndarray) or (volume.ndim != 3):
-        raise ValueError('Input volume should be a 3D numpy array.')
+    if (volume.ndim != 3):
+        raise ValueError('Input volume should be a 3D array.')
     if volume.shape[0] < 2 or volume.shape[1] < 2 or volume.shape[2] < 2:
         raise ValueError("Input array must be at least 2x2x2.")
     volume = np.ascontiguousarray(volume, np.float32)  # no copy if not necessary
