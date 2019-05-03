@@ -10,20 +10,6 @@ from ..transform_xy import AffineTransform, warp
 from ..transform_xy._geometric import _to_ndimage_mode
 
 
-def _multichannel_default(multichannel, ndim):
-    if multichannel is not None:
-        return multichannel
-    else:
-        warn('The default multichannel argument (None) is deprecated.  Please '
-             'specify either True or False explicitly.  multichannel will '
-             'default to False starting with release 0.16.')
-        # utility for maintaining previous color image default behavior
-        if ndim == 3:
-            return True
-        else:
-            return False
-
-
 def resize(image, output_shape, order=1, mode='reflect', cval=0, clip=True,
            preserve_range=False, anti_aliasing=True, anti_aliasing_sigma=None):
     """Resize image to match a certain size.
@@ -192,7 +178,7 @@ def resize(image, output_shape, order=1, mode='reflect', cval=0, clip=True,
 
 
 def rescale(image, scale, order=1, mode='reflect', cval=0, clip=True,
-            preserve_range=False, multichannel=None,
+            preserve_range=False, multichannel=False,
             anti_aliasing=True, anti_aliasing_sigma=None):
     """Scale image by a certain factor.
 
@@ -236,9 +222,7 @@ def rescale(image, scale, order=1, mode='reflect', cval=0, clip=True,
         https://scikit-image.org/docs/dev/user_guide/data_types.html
     multichannel : bool, optional
         Whether the last axis of the image is to be interpreted as multiple
-        channels or another spatial dimension. By default, is set to True for
-        3D (2D+color) inputs, and False for others. Starting in release 0.16,
-        this will always default to False.
+        channels or another spatial dimension.
     anti_aliasing : bool, optional
         Whether to apply a Gaussian filter to smooth the image prior to
         down-scaling. It is crucial to filter when down-sampling the image to
@@ -267,7 +251,6 @@ def rescale(image, scale, order=1, mode='reflect', cval=0, clip=True,
     (256, 256)
 
     """
-    multichannel = _multichannel_default(multichannel, image.ndim)
     scale = np.atleast_1d(scale)
     if len(scale) > 1:
         if ((not multichannel and len(scale) != image.ndim) or
