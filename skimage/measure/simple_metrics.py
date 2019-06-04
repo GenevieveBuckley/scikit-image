@@ -179,7 +179,7 @@ def compare_nmi(im_true, im_test, *, bins=100):
 
     ..math::
 
-        Y(A, B) = \frac{H(A) + H(B)}{H(A, B)}
+       Y(A, B) = \frac{H(A) + H(B)}{H(A, B)}
 
     where :math:`H(X)` is the entropy,
     :math:`- \sum_{x \in X}{x \log x}.`
